@@ -25,7 +25,7 @@ const updateUser = async (user_id, data) => {
     const keys = Object.keys(data);
     const values = Object.values(data);
 
-    const setQuery = keys.map((k,i) => `${k}=${i+1}`).join(', ');
+    const setQuery = keys.map((k,i) => `${k}=$${i+1}`).join(', ');
 
     const result = await pool.query(`UPDATE users SET ${setQuery} WHERE user_id = $${keys.length + 1} RETURNING *`,
         [...values, user_id]
