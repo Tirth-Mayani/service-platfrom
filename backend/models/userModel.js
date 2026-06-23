@@ -42,7 +42,7 @@ const deleteUser = async (user_id) => {
     return result.rows[0];
 };
 
-const gettAllUsers = async () => {
+const getAllUsers = async () => {
     const result = await pool.query(`SELECT user_id, name, email, phone, role, create_at FROM users`);
     return result.rows;
 }
@@ -57,4 +57,4 @@ const getUserByEmail = async (email) => {
     return result.rows[0];
 }
 
-module.exports = {createUser, updateUserRole, findUserByEmail, updateUser, deleteUser, gettAllUsers, getUserById, getUserByEmail};
+module.exports = {createUser, updateUserRole, findUserByEmail, updateUser, deleteUser, getAllUsers, getUserById, getUserByEmail};

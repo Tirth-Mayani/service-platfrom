@@ -1,16 +1,17 @@
 const jwt = require('jsonwebtoken');
+const apiError = require('../utils/apiError');
 
 module.exports = (req, res, next) => {
+    console.log(req.headers.authorization);
     const token = req.headers.authorization?.split(' ')[1]; //extracting token from req header
-
-    if(!token)
-        return res.status(401).json({message: "No token found"});
-
     try{
+        if(!token)
+            throw new apiError(401, 'No token found');
+
         const decoded = jwt.verify(token, process.env.SECRET_KEY); //verifying token
         req.user = decoded;
         next();
-    }catch{
-        res.status(401).json({message: "Invalid token"});
+    }catch(err){
+        next(err);
     }
 };

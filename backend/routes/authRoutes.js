@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, updateUserByAdmin, deleteUserByAdmin, fetchAllUsers, fetchUseryId, fetchUserByEmail } = require('../controllers/authController');
+const { register, login, updateUserByAdmin, deleteUserByAdmin, fetchAllUsers, fetchUserById, fetchUserByEmail } = require('../controllers/authController');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
 const {body} = require('express-validator');
@@ -30,7 +30,7 @@ router.get('/users', auth, role('admin'), fetchAllUsers);
 
 /**
  * @swagger
- * /api/auth/user/:user_id:
+ * /api/auth/user/{user_id}:
  *  get:
  *     summary: Get a user by ID
  *     tags: [Auth]
@@ -49,7 +49,7 @@ router.get('/users', auth, role('admin'), fetchAllUsers);
  *       404:
  *         description: User not found
  */
-router.get('/user/:user_id', fetchUseryId);
+router.get('/user/:user_id', auth,  fetchUserById);
 
 /**
  * @swagger
@@ -72,7 +72,7 @@ router.get('/user/:user_id', fetchUseryId);
  *       404:
  *         description: User not found
  */
-router.get('/user', fetchUserByEmail);
+router.get('/user', auth, fetchUserByEmail);
 
 /**
  * @swagger
@@ -114,10 +114,11 @@ router.get('/user', fetchUserByEmail);
  */
 router.post('/register', 
     [
+        body('name').trim().notEmpty().withMessage('Name is required'),
         body('email').isEmail(),
         body('phone').isNumeric(),
         body('password').isStrongPassword({
-            minlength: 6,
+            minLength: 6,
             minLowercase: 1,
             minUppercase: 1,
             minNumbers: 1,
