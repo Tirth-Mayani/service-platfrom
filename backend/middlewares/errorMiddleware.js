@@ -10,9 +10,9 @@ const errorHandler = (err, req, res, next) => {
         });
     }
 
-    return res.status(555).json({  //555 status code to mark the actual return point of error
+    return res.status(500).json({  //555 status code to mark the actual return point of error
         success: false,
-        message: err.message || "Internal Server Error"
+        message: err.message || "Internal Server Error. End of the line."
     });
 };
 
