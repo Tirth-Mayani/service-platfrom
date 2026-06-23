@@ -12,6 +12,7 @@ module.exports = (req, res, next) => {
         req.user = decoded;
 
         //console.log(req.user)
+        //test comment
 
         next();
     }catch(err){
